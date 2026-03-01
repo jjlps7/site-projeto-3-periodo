@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+button {
+    margin-bottom: 10px;
+}
+
+.login-body {
+    background-color: rgb(76, 143, 243);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 900px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.login-card {
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.login-body h1 {
+    margin-bottom: 24px;
+}
+
+.cadastro-body {
+    background-color: rgb(76, 143, 243);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 900px;
+}
+
+.cadastro-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.cadastro-card {
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.cadastro-body h1 {
+    margin-bottom: 24px;
+}
+
+.cadastro-botao {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header {
+    background-color: rgb(76, 143, 243);
+    color: #fff;
+    padding-left: 40px;
+    position: sticky;
+}
+
+.header-container {
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo span{
+    color: rgb(163, 255, 4);
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  font-size: 16px;
+}
+
+.nav a:hover {
+  color: rgb(163, 255, 4);
+  transition: color 0.2s;
+}
+
+.home-container {
+    background-color: rgb(102, 240, 226);
+}
+
+.secao {
+    display: flex;
+}
+
+.secao-principal {
+    display: flex;
+    background-color: rgb(43, 116, 226);
+    color: azure;
+    margin: 35px;
+    padding: 10px;
+    border-radius: 18px;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 200px;
+}

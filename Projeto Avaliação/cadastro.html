@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body class="cadastro-body">
+    <div class="cadastro-container">
+        <div class="cadastro-card">
+            <form action="home_page.html" method="get"> <!-- Usando get em vez de post para simular o acesso após cadastro, com post dá erro porque não temos backend-->
+                <h1>Crie sua conta</h1>
+                <p>
+                    Nome
+                <p>
+                    <input type="text" name="nome" id="nome" placeholder="Digite seu nome">
+                </p>
+                </p>
+                <p>
+                    E-Mail
+                <p>
+                    <input type="email" name="email" id="email" placeholder="Digite seu e-mail">
+                </p>
+                </p>
+                <p>
+                    Confirme seu E-Mail
+                <p>
+                    <input type="email" name="confirmar_email" id="" placeholder="Confirme seu e-mail">
+                </p>
+                </p>
+                <p>
+                    Senha
+                <p>
+                    <input type="password" name="senha" id="" placeholder="Digite sua senha">
+                </p>
+                </p>
+                <p>
+                    Confirme sua senha
+                <p>
+                    <input type="password" name="confirmar_senha" id="" placeholder="Confirme sua senha">
+                </p>
+                </p>
+                <p class="cadastro-botao">
+                    <button type="submit">Criar</button>
+                    <button type="reset">Apagar</button>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
