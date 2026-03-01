@@ -129,3 +129,16 @@ button {
     justify-content: flex-end;
     min-height: 200px;
 }
+
+.login-card a {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.logo-canto {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 200px;
+    height: auto;
+}
