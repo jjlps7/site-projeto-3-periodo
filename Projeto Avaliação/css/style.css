@@ -135,6 +135,7 @@ button {
     flex-direction: column;
     justify-content: flex-end;
     min-height: 200px;
+    width: 100%;
 }
 
 .login-card a {
@@ -202,3 +203,16 @@ body {
     transition: top 0.2s ease;
 }
 .skip-link:focus { top: 1rem; } /* ao pressionar 'enter' o foco vai para o formulário */
+
+.footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 1.00rem;
+    border-top: 1px solid #ddd;
+    margin-top: 2rem;
+}
+
+.footer a {
+    color: inherit;
+    text-decoration: underline;
+}
