@@ -176,3 +176,29 @@ body {
     display: block;
     margin: 0 auto 24px auto;
 }
+
+*:focus { /* remove o contorno dos elementos em foco por padrão */
+    outline: none; 
+}
+
+*:focus-visible { /* contornos ativos apenas quando navegação por teclado está ativa */
+    outline: 2px solid #1a56db;
+    outline-offset: 3px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.15);
+}
+
+.skip-link { /* ao ativar a navegação por telcado 'tab' aparece uma mensagem perguntando se deseja pular para o formulário */
+    position: fixed;
+    top: -100px;
+    right: 1rem;
+    z-index: 9999;
+    padding: 0.6rem 1.2rem;
+    background: #1a56db;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+.skip-link:focus { top: 1rem; } /* ao pressionar 'enter' o foco vai para o formulário */

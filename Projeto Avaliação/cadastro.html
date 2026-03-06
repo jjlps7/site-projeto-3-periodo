@@ -12,41 +12,64 @@
     <div class="cadastro-container">
         <img src="imgs/Logo.jpeg" alt="Imagem com fundo branco com os dizeres B5 de forma estilizada e Base 5 em azul e automações em preto" class="logo-login-cadastro">
         <div class="cadastro-card">
-            <form action="home_page.html" method="get"> <!-- Usando get em vez de post para simular o acesso após cadastro, com post dá erro porque não temos backend-->
+            <form id="form-cadastro" action="home_page.html" method="get"> <!-- Usando get em vez de post para simular o acesso após cadastro, com post dá erro porque não temos backend-->
                 <h1>Crie sua conta</h1>
 
                 <div class="campo">
                     <label for="nome">Nome</label>
-                    <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required>
+                    <input type="text" name="nome" id="nome" placeholder="Digite seu nome" tabindex="1" required>
                 </div>
 
                 <div class="campo">
                     <label for="email">E-Mail</label>
-                    <input type="email" name="email" id="email" placeholder="Digite seu e-mail" required>
+                    <input type="email" name="email" id="email" placeholder="Digite seu e-mail" tabindex="2" required>
                 </div>
 
                 <div class="campo">
                     <label for="confirmar_email">Confirme seu E-Mail</label>
-                    <input type="email" name="confirmar_email" id="confirmar_email" placeholder="Confirme seu e-mail" required>
+                    <input type="email" name="confirmar_email" id="confirmar_email" placeholder="Confirme seu e-mail" tabindex="3" required>
                 </div>
 
                 <div class="campo">
                     <label for="senha">Senha</label>
-                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha" tabindex="4" required>
                 </div>
 
                 <div class="campo">
                     <label for="confirmar_senha">Confirme sua senha</label>
-                    <input type="password" name="confirmar_senha" id="confirmar_senha" placeholder="Confirme sua senha" required>
+                    <input type="password" name="confirmar_senha" id="confirmar_senha" placeholder="Confirme sua senha" tabindex="5" required>
                 </div>
 
                 <div class="cadastro-botao">
-                    <button type="submit">Criar</button>
-                    <button type="reset">Apagar</button>
+                    <button type="submit" tabindex="6">Criar</button>
+                    <button type="reset" tabindex="7">Apagar</button>
                 </div>
             </form>
+            <p>
+                Já tem conta? <a href="login.html" tabindex="8">Login</a>
+            </p>
         </div>
     </div>
+
+    <script>
+        // pega os inputs do formulário
+        const campos = document.querySelectorAll('input');
+        // percorre cada um
+        campos.forEach(function (campo, index) {
+            campo.addEventListener('keydown', function (e) { // verifica se uma tecla é pressionada no campo
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // se for enter, cancela o comportamento padrão (enviar formulário)
+                    const proximo = campos[index + 1]; // pega próximo input
+                    if (proximo) {
+                        proximo.focus(); //move foco pra ele
+                    } else {
+                        document.getElementById('form-cadastro').submit(); //quando está no último, submete o formulário
+                    }
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

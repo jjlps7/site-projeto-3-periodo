@@ -12,30 +12,50 @@
     <div class="login-container">
         <img src="imgs/Logo.jpeg" alt="Imagem com fundo branco com os dizeres B5 de forma estilizada e Base 5 em azul e automações em preto" class="logo-login-cadastro">
         <div class="login-card">
-            <form action="home_page.html" method="get">
+            <form id="form-login" action="home_page.html" method="get">
                 <h1>Login</h1>
 
                 <div class="campo">
                     <label for="email">E-Mail</label>
-                    <input type="email" name="email" id="email" placeholder="Digite seu e-mail" required>
+                    <input type="email" name="email" id="email" placeholder="Digite seu e-mail" tabindex="1" required>
                 </div>
 
                 <div class="campo">
                     <label for="senha">Senha</label>
-                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha" required>
+                    <input type="password" name="senha" id="senha" placeholder="Digite sua senha" tabindex="2" required>
                 </div>
 
                 <div class="login-botao">
-                    <button type="submit">Entrar</button>
+                    <button type="submit" tabindex="3">Entrar</button>
                 </div>
 
             </form>
 
             <p>
-                Não tem conta? <a href="cadastro.html">Cadastre-se</a>
+                Não tem conta? <a href="cadastro.html" tabindex="4">Cadastre-se</a>
             </p>
         </div>
     </div>
+
+    <script>
+        // pega os inputs do formulário
+        const campos = document.querySelectorAll('input');
+        // percorre cada um
+        campos.forEach(function (campo, index) {
+            campo.addEventListener('keydown', function (e) { // verifica se uma tecla é pressionada no campo
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // se for enter, cancela o comportamento padrão (enviar formulário)
+                    const proximo = campos[index + 1]; // pega próximo input
+                    if (proximo) {
+                        proximo.focus(); //move foco pra ele
+                    } else {
+                        document.getElementById('form-login').submit(); //quando está no último, submete o formulário
+                    }
+                }
+            });
+        });
+    </script>
+
 </body>
 
 </html>

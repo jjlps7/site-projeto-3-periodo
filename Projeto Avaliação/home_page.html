@@ -9,19 +9,22 @@
 </head>
 
 <body class="home-container">
+      <!-- SKIP LINK: primeiro elemento da página, permite pular o nav e ir direto pro conteúdo -->
+    <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo</a>
     <header class="header">
         <div class="header-container">
             <h1 class="logo">Base <span>5</span> automações</h1>
             <nav class="nav">
                 <a href="login.html">Login</a>
-                <a href="#">Início</a>
+                <a href="home_page.html">Início</a>
                 <a href="sobre.html">Sobre</a>
                 <a href="#">Projetos</a>
             </nav>
         </div>
     </header>
 
-    <main class="main">
+    <!-- id="conteudo-principal" é o destino do skip link -->
+    <main id="conteudo-principal" class="main" tabindex="-1">
         <section class="secao">
             <article class="secao-principal">
                 <h2>Lorem ipsum dolor</h2>
