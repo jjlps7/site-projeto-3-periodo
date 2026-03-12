@@ -360,3 +360,7 @@ body {
 
 .aviso-senhas.ok   { color: #27ae60; }
 .aviso-senhas.erro { color: #c0392b; }
+
+.login-card p {
+    white-space: nowrap; /* não quebrar a linha do cadastre-se */
+}

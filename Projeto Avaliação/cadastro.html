@@ -23,11 +23,14 @@
                 <div class="campo-email">
                     <label for="email">E-Mail</label>
                     <input type="email" name="email" id="email" placeholder="Digite seu e-mail" tabindex="2" required>
+                    <p class="aviso-senhas" id="aviso-email"></p>
+                    <!-- O JS escreve conforme a pessoa digita-->
                 </div>
 
                 <div class="campo-confirmar-email">
                     <label for="confirmar_email">Confirme seu E-Mail</label>
                     <input type="email" name="confirmar_email" id="confirmar_email" placeholder="Confirme seu e-mail" tabindex="3" required>
+                    <p class="aviso-senhas" id="aviso-confirmar-email"></p>
                 </div>
 
                 <div class="campo-senha">
@@ -128,6 +131,56 @@
         }
 
         inputConfirmar.addEventListener('input', checarConfirmacao);
+        
+        // confirmação email
+        const inputEmail  = document.getElementById('email');
+        const avisoEmail  = document.getElementById('aviso-email');
+
+        inputEmail.addEventListener('input', function () {
+            const val = inputEmail.value;
+
+            if (val === '') {
+                avisoEmail.textContent = '';
+                avisoEmail.className = 'aviso-senhas';
+                return; /* campo vazio, não mostra nada */
+            }
+
+            const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val); //verifica se segue o modelo algo@algo.algo
+
+            if (emailValido) {
+                avisoEmail.textContent = '✓ E-mail válido';
+                avisoEmail.className = 'aviso-senhas ok';
+            } else {
+                avisoEmail.textContent = '✗ E-mail inválido';
+                avisoEmail.className = 'aviso-senhas erro';
+            }
+        });
+        
+        //verificação se emails coincidem
+        const inputConfirmarEmail  = document.getElementById('confirmar_email');
+        const avisoConfirmarEmail  = document.getElementById('aviso-confirmar-email');
+
+        function checarConfirmacaoEmail() {
+            if (inputConfirmarEmail.value === '') {
+                avisoConfirmarEmail.textContent = '';
+                avisoConfirmarEmail.className = 'aviso-senhas';
+                return;
+            }
+            if (inputEmail.value === inputConfirmarEmail.value) {
+                avisoConfirmarEmail.textContent = '✓ Os e-mails coincidem';
+                avisoConfirmarEmail.className = 'aviso-senhas ok';
+            } else {
+                avisoConfirmarEmail.textContent = '✗ Os e-mails não coincidem';
+                avisoConfirmarEmail.className = 'aviso-senhas erro';
+            }
+        }
+
+        inputConfirmarEmail.addEventListener('input', checarConfirmacaoEmail);
+
+        // atualiza o aviso de confirmação se a pessoa editar o email depois
+        inputEmail.addEventListener('input', function () {
+            if (inputConfirmarEmail.value.length > 0) checarConfirmacaoEmail();
+        });
 
     </script>
 
