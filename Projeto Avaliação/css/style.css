@@ -16,6 +16,11 @@ button {
     margin-bottom: 10px;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+
 .login-body {
     background-color: rgb(76, 143, 243);
     display: flex;
@@ -37,8 +42,47 @@ button {
     border-radius: 20px;
 }
 
+.login-card h1 {
+    font-size: 25px;
+}
+
+.login-card .campo-email input {
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 16px;
+}
+
+.login-card .campo-senha input {
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 16px;
+}
+
 .login-body h1 {
     margin-bottom: 24px;
+}
+
+.login-botao {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-botao button {
+    padding: 5px 10px;
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.login-botao button:hover {
+    background-color: rgb(76, 143, 243);
+    color: #000;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .cadastro-body {
@@ -62,6 +106,50 @@ button {
     border-radius: 20px;
 }
 
+.cadastro-card h1 {
+    font-size: 25px;
+}
+
+.cadastro-card .campo-nome input {
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 16px;
+}
+
+.cadastro-card .campo-email input {
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 16px;
+}
+
+.cadastro-card .campo-confirmar-email input {
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 16px;
+}
+
+.cadastro-card .campo-senha input {
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 16px;
+}
+
+.cadastro-card .campo-confirmar-senha input {
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2px 2px;
+    font-size: 16px;
+}
+
 .cadastro-body h1 {
     margin-bottom: 24px;
 }
@@ -71,9 +159,18 @@ button {
     justify-content: space-between;
 }
 
-.login-botao {
-    display: flex;
-    justify-content: space-between;
+.cadastro-botao button {
+    padding: 5px 10px;
+    border-style: bold;
+    border-width: 1px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.cadastro-botao button:hover {
+    background-color: rgb(76, 143, 243);
+    color: #000;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 .header {
@@ -140,12 +237,10 @@ button {
 
 .login-card a {
     color: #0400ff;
-    text-decoration: underline;
 }
 
 .cadastro-card a {
     color: #0400ff;
-    text-decoration: underline;
 }
 
 .secao-principal h3 {
@@ -162,10 +257,6 @@ button {
     margin-bottom: 5px;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-}
 
 .logo-login-cadastro {
     width: 290px;
