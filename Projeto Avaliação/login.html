@@ -54,6 +54,21 @@
                 }
             });
         });
+
+        const btnEntrar = document.querySelector('#form-login button[type="submit"]');
+        const inputEmail = document.getElementById('email');
+        const inputSenha = document.getElementById('senha');
+
+        function atualizarBotao() {
+            if (inputEmail.value.trim() !== '' && inputSenha.value.trim() !== '') { // trim() remove espaços em branco
+                btnEntrar.classList.add('botao-pronto');
+            } else {
+                btnEntrar.classList.remove('botao-pronto');
+            }
+        }
+
+        inputEmail.addEventListener('input', atualizarBotao);
+        inputSenha.addEventListener('input', atualizarBotao);
     </script>
 
 </body>

@@ -57,8 +57,8 @@
                 </div>
 
                 <div class="cadastro-botao">
-                    <button type="submit" tabindex="6">Criar</button>
                     <button type="reset" tabindex="7">Apagar</button>
+                    <button type="submit" tabindex="6">Criar</button>
                 </div>
             </form>
             <p>
@@ -85,6 +85,7 @@
             });
         });
         
+        // Confirmação de senha
         /* guarda os IDs do HTML */
         const inputSenha = document.getElementById('senha');
         const inputConfirmar = document.getElementById('confirmar_senha');
@@ -181,6 +182,29 @@
         inputEmail.addEventListener('input', function () {
             if (inputConfirmarEmail.value.length > 0) checarConfirmacaoEmail();
         });
+
+        const btnCriar = document.querySelector('#form-cadastro button[type="submit"]');
+        const campoNome = document.getElementById('nome');
+
+        function atualizarBotaoCadastro() {
+            const tudo_preenchido = campoNome.value.trim() !== ''
+                && inputEmail.value.trim() !== ''
+                && inputConfirmarEmail.value.trim() !== ''
+                && inputSenha.value.trim() !== ''
+                && inputConfirmar.value.trim() !== '';
+
+            if (tudo_preenchido) {
+                btnCriar.classList.add('botao-pronto');
+            } else {
+                btnCriar.classList.remove('botao-pronto');
+            }
+        }
+
+        campoNome.addEventListener('input', atualizarBotaoCadastro);
+        inputEmail.addEventListener('input', atualizarBotaoCadastro);
+        inputConfirmarEmail.addEventListener('input', atualizarBotaoCadastro);
+        inputSenha.addEventListener('input', atualizarBotaoCadastro);
+        inputConfirmar.addEventListener('input', atualizarBotaoCadastro);
 
     </script>
 
