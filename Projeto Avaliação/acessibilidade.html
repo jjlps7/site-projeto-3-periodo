@@ -129,6 +129,17 @@
         </p>
     </footer>
 
+<script>
+    const nome = localStorage.getItem('nomeUsuario');
+    const linkLogin = document.querySelector('.nav a[href="login.html"]');
+
+    if (nome && linkLogin) {
+    linkLogin.textContent = 'Olá, ' + nome;
+    linkLogin.removeAttribute('href'); // remove o link completamente
+    linkLogin.style.cursor = 'default'; // muda o cursor de mãozinha para seta normal
+    }
+</script>
+
 </body>
 
 </html>

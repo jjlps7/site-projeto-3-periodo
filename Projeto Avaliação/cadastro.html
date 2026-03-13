@@ -84,6 +84,9 @@
                 }
             });
         });
+        document.getElementById('form-cadastro').addEventListener('submit', function() {
+            localStorage.setItem('nomeUsuario', campoNome.value);
+        });
         
         // Confirmação de senha
         /* guarda os IDs do HTML */

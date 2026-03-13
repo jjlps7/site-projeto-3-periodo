@@ -168,6 +168,15 @@
         atual = (atual + 1) % depoimentos.length; // quando chega a 0 volta ao íncio
         depoimentos[atual].classList.add('ativo'); // mostra o próximo depoimetno
     }, 5000);
+
+    const nome = localStorage.getItem('nomeUsuario');
+    const linkLogin = document.querySelector('.nav a[href="login.html"]');
+
+    if (nome && linkLogin) {
+    linkLogin.textContent = 'Olá, ' + nome;
+    linkLogin.removeAttribute('href'); // remove o link completamente
+    linkLogin.style.cursor = 'default'; // muda o cursor de mãozinha para seta normal
+    }
 </script>
 </body>
 
