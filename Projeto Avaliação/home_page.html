@@ -163,11 +163,11 @@
 <script>
     const depoimentos = document.querySelectorAll('.depoimento'); //pega todos os depoimentos e guarda
     let atual = 0;
-    setInterval(function () { // realiza uma função a cada 4000 milisegundos
+    setInterval(function () { // realiza uma função a cada tantos milisegundos
         depoimentos[atual].classList.remove('ativo'); // remove o depoimento atual
         atual = (atual + 1) % depoimentos.length; // quando chega a 0 volta ao íncio
         depoimentos[atual].classList.add('ativo'); // mostra o próximo depoimetno
-    }, 6000);
+    }, 5000);
 </script>
 </body>
 

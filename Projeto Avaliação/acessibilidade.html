@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acessibilidade — Base 5 Automações</title>
     <link rel="stylesheet" href="./css/style.css">
+    <style>
+    .servicos-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .secao-stats .stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    }
+    </style>
 </head>
 
 <body class="home-container">
@@ -26,50 +38,89 @@
     </header>
 
     <main id="conteudo-acessibilidade" class="main" tabindex="-1">
+
+        <!-- BANNER -->
         <section class="secao">
-            <article class="secao-principal">
-
+            <article class="secao-principal-homepage" aria-label="Declaração de Acessibilidade">
                 <h2>Declaração de Acessibilidade</h2>
-
-                <p>
-                    A Base 5 Automações tem o compromisso de garantir a acessibilidade digital de seus produtos
-                    para todas as pessoas, incluindo aquelas com deficiência.
-                </p>
-
-                <h3>Padrão adotado</h3>
-                <p>
-                    Este site busca conformidade com o nível <strong>AA</strong> das diretrizes
-                    <strong>WCAG 2.2</strong> (Web Content Accessibility Guidelines),
-                    publicadas pelo W3C.
-                </p>
-
-                <h3>O que já foi implementado</h3>
-                <p>As seguintes práticas de acessibilidade estão aplicadas neste site:</p>
-                <ul>
-                    <li>Navegação completa via teclado (Tab e Shift+Tab)</li>
-                    <li>Indicador de foco visível em todos os elementos interativos</li>
-                    <li>Formulários com rótulos associados a cada campo</li>
-                    <li>Textos alternativos descritivos nas imagens</li>
-                    <li>Skip link para pular a navegação e ir direto ao conteúdo</li>
-                    <li>Hierarquia de títulos estruturada (H1, H2, H3)</li>
-                </ul>
-
-                <h3>Limitações conhecidas</h3>
-                <p>
-                    Algumas áreas do site ainda estão em processo de melhoria.
-                    Caso encontre alguma dificuldade de acesso, entre em contato conosco.
-                </p>
-
-                <h3>Feedback e contato</h3>
-                <p>
-                    Se você encontrou alguma barreira de acessibilidade ou tem sugestões de melhoria,
-                    envie um e-mail para:
-                    <a href="mailto:acessibilidade@base5.com.br">acessibilidade@base5.com.br</a>
-                </p>
-                <p>Faremos o possível para responder em até 2 dias úteis.</p>
-
+                <p>A Base 5 Automações tem o compromisso de garantir a acessibilidade digital de seus produtos para todas as pessoas, incluindo aquelas com deficiência.</p>
             </article>
         </section>
+
+        <!-- PRÁTICAS -->
+        <section class="secao-servicos" aria-label="O que já foi implementado">
+            <h2 class="servicos-titulo">O que já foi implementado</h2>
+            <div class="servicos-grid">
+                <div class="servico-card">
+                    <span class="servico-icone">⌨️</span>
+                    <h3>Navegação por Teclado</h3>
+                    <p>Navegação completa via Tab e Shift+Tab, com Enter movendo o foco entre campos nos formulários de login e cadastro.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">🔍</span>
+                    <h3>Indicador de Foco Visível</h3>
+                    <p>Contorno azul visível em todos os elementos interativos ao navegar pelo teclado, ativado via CSS com <code>:focus-visible</code>.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">📝</span>
+                    <h3>Formulários Acessíveis</h3>
+                    <p>Todos os campos de login e cadastro possuem rótulos associados via <code>label for</code>, compatíveis com leitores de tela.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">🖼️</span>
+                    <h3>Textos Alternativos</h3>
+                    <p>Todas as imagens do site possuem atributo <code>alt</code> com descrição detalhada do conteúdo visual.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">⏭️</span>
+                    <h3>Skip Link</h3>
+                    <p>Link visível ao pressionar Tab que permite pular o menu de navegação e ir diretamente ao conteúdo principal da página.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">🔔</span>
+                    <h3>Avisos em Tempo Real</h3>
+                    <p>Validações do formulário de cadastro usam <code>aria-live</code> para que leitores de tela anunciem erros automaticamente ao digitar.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">📑</span>
+                    <h3>Hierarquia de Títulos</h3>
+                    <p>Todas as páginas seguem estrutura de títulos organizada com H1, H2 e H3, facilitando a navegação por leitores de tela.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">🏷️</span>
+                    <h3>Regiões Identificadas</h3>
+                    <p>Seções e menus de navegação possuem <code>aria-label</code> descritivo, permitindo que leitores de tela identifiquem cada região da página.</p>
+                </div>
+                <div class="servico-card">
+                    <span class="servico-icone">🎨</span>
+                    <h3>Contraste de Cores</h3>
+                    <p>Cores dos textos e fundos revisadas para atingir o nível mínimo de contraste AA exigido pelo WCAG 2.2.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PADRÃO E CONTATO -->
+        <section class="secao-stats" aria-label="Padrão e contato">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-numero">WCAG 2.2</span>
+                    <span class="stat-label">Padrão adotado</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-numero">AA</span>
+                    <span class="stat-label">Nível de conformidade</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-numero">2 dias</span>
+                    <span class="stat-label">Prazo de resposta</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-numero">📧</span>
+                    <span class="stat-label">acessibilidade@base5.com.br</span>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="footer">
