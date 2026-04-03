@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Finalizar Compra</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="cadastro-body">
+    <div class="cadastro-container">
+        <div class="cadastro-card">
+            <h1>Finalizar Compra</h1>
+            <p>Você está contratando o plano: <strong><%= plano %></strong></p>
+            
+            <form action="/comprar" method="POST">
+                <input type="hidden" name="plano" value="<%= plano %>">
+                
+                <div class="campo-nome">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" name="nome" id="nome" required>
+                </div>
+                
+                <div class="campo-email">
+                    <label for="email">E-mail corporativo</label>
+                    <input type="email" name="email" id="email" required>
+                </div>
+                
+                <div class="cadastro-botao" style="margin-top: 20px;">
+                    <button type="submit" class="botao-pronto">Confirmar Compra</button>
+                </div>
+            </form>
+            <br>
+            <a href="/" style="color: blue;">Voltar</a>
+        </div>
+    </div>
+</body>
+</html>
