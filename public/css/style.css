@@ -1,6 +1,14 @@
+/* ==========================================================================
+   1. RESET E ESTILOS GLOBAIS (BASE)
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
 }
 
 a {
@@ -16,167 +24,46 @@ button {
     margin-bottom: 10px;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
+/* ==========================================================================
+   2. ACESSIBILIDADE E FOCO
+   ========================================================================== */
+*:focus {
+    /* remove o contorno dos elementos em foco por padrão */
+    outline: none;
 }
 
-.login-body {
-    background-color: rgb(76, 143, 243);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+*:focus-visible {
+    /* contornos ativos apenas quando navegação por teclado está ativa */
+    outline: 2px solid #1a56db;
+    outline-offset: 3px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.15);
 }
 
-.login-container {
-    background-color: white;
-    padding: 50px;
-    border-radius: 20px;
-    width: 300px;
+.skip-link {
+    /* ao ativar a navegação por teclado 'tab' aparece um link para pular o menu */
+    position: fixed;
+    top: -100px;
+    right: 1rem;
+    z-index: 9999;
+    padding: 0.6rem 1.2rem;
+    background: #1a56db;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: top 0.2s ease;
 }
 
-.login-card {
-    background-color: #fff;
-    padding: 50px;
-    border-radius: 20px;
+.skip-link:focus {
+    top: 1rem;
 }
 
-.login-card h1 {
-    font-size: 25px;
-}
-
-.login-card .campo-email input {
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 2px 2px;
-}
-
-.login-card .campo-senha input {
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 2px 2px;
-}
-
-.login-body h1 {
-    margin-bottom: 24px;
-}
-
-.login-botao {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.botao-pronto {
-    background-color: rgb(0, 37, 92);
-    color: white;
-    border-color: rgb(0, 37, 92);
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.login-botao button {
-    padding: 5px 10px;
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-.login-botao button:hover {
-    background-color: rgb(76, 143, 243);
-    color: #000;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.cadastro-body {
-    background-color: rgb(76, 143, 243);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    /*Sempre pegar 100% da altura do computador */
-}
-
-.cadastro-container {
-    background-color: white;
-    padding: 50px;
-    border-radius: 20px;
-    width: 300px;
-}
-
-.cadastro-card {
-    background-color: #fff;
-    padding: 50px;
-    border-radius: 20px;
-}
-
-.cadastro-card p {
-    margin-top: 8px;
-    font-size: 1rem;
-}
-
-.cadastro-card h1 {
-    font-size: 25px;
-}
-
-.cadastro-card .campo-nome input {
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 2px 2px;
-}
-
-.cadastro-card .campo-email input {
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 2px 2px;
-}
-
-.cadastro-card .campo-confirmar-email input {
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 2px 2px;
-}
-
-.cadastro-card .campo-senha input {
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 2px 2px;
-}
-
-.cadastro-card .campo-confirmar-senha input {
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 5px;
-    padding: 2px 2px;
-}
-
-.cadastro-body h1 {
-    margin-bottom: 24px;
-}
-
-.cadastro-botao {
-    display: flex;
-    justify-content: space-between;
-}
-
-.cadastro-botao button {
-    padding: 5px 10px;
-    border-style: bold;
-    border-width: 1px;
-    border-radius: 20px;
-    cursor: pointer;
-}
-
-.cadastro-botao button:hover {
-    background-color: rgb(76, 143, 243);
-    color: #000;
-    transition: background-color 0.2s, color 0.2s;
+/* ==========================================================================
+   3. ESTRUTURA PRINCIPAL (HEADER E FOOTER)
+   ========================================================================== */
+.home-container {
+    background-color: rgb(255, 255, 255);
 }
 
 .header {
@@ -220,10 +107,22 @@ body {
     transition: color 0.2s;
 }
 
-.home-container {
-    background-color: rgb(255, 255, 255);
+.footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 1.00rem;
+    border-top: 1px solid #ddd;
+    margin-top: 2rem;
 }
 
+.footer a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   4. SEÇÕES GLOBAIS E BANNERS (HERO SECTIONS)
+   ========================================================================== */
 .secao {
     display: flex;
 }
@@ -241,12 +140,9 @@ body {
     width: 100%;
 }
 
-.login-card a {
-    color: #0400ff;
-}
-
-.cadastro-card a {
-    color: #0400ff;
+.secao-principal h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .secao-principal h3 {
@@ -258,140 +154,67 @@ body {
     margin-bottom: 15px;
 }
 
-.secao-principal h2 {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-
-.logo-login-cadastro {
-    width: 290px;
-    height: 150px;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 24px auto;
-}
-
-.logo-sobre {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 24px auto;
-}
-
-*:focus {
-    /* remove o contorno dos elementos em foco por padrão */
-    outline: none;
-}
-
-*:focus-visible {
-    /* contornos ativos apenas quando navegação por teclado está ativa */
-    outline: 2px solid #1a56db;
-    outline-offset: 3px;
-    border-radius: 6px;
-    box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.15);
-}
-
-.skip-link {
-    /* ao ativar a navegação por telcado 'tab' aparece uma mensagem perguntando se deseja pular para o formulário */
-    position: fixed;
-    top: -100px;
-    right: 1rem;
-    z-index: 9999;
-    padding: 0.6rem 1.2rem;
-    background: #1a56db;
-    color: #fff;
-    font-weight: 700;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: top 0.2s ease;
-}
-
-.skip-link:focus {
-    top: 1rem;
-}
-
-/* ao pressionar 'enter' o foco vai para o formulário */
-
-.footer {
-    text-align: center;
-    padding: 1.5rem;
-    font-size: 1.00rem;
-    border-top: 1px solid #ddd;
-    margin-top: 2rem;
-}
-
-.footer a {
-    color: inherit;
-    text-decoration: underline;
-
-}
-
-.logo span {
-    color: #4d8fff;
-}
-
-.requisitos-senha {
-    list-style: none;
-    /* remove os pontinhos/números padrão de lista */
-    padding: 4px 0 0 0;
-    /* dá um pequeno espaço só no topo, zerando os outros lados */
-    margin: 0;
-    /* remove a margem padrão que o navegador coloca em listas */
-    display: none;
-    /* escondido por padrão, aparece ao clicar no campo */
-}
-
-.campo-senha input:focus~.requisitos-senha {
-    display: block;
-    /* mostra quando o input está em foco */
-}
-
-.requisito {
-    font-size: 0.78rem;
-    color: #c0392b;
-    margin: 1px 0;
+/* Estilos de Banners Específicos com Imagem de Fundo */
+.secao-principal-homepage,
+.secao-principal-acessibilidade,
+.secao-principal-sobre,
+.secao-principal-projetos {
     display: flex;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    margin: 35px;
+    padding: 60px 40px;
+    border-radius: 18px;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 5px;
-    transition: color 0.2s;
-}
-
-.requisito.ok {
-    color: #27ae60;
-}
-
-.requisito .icone {
-    font-weight: bold;
-    font-size: 0.9rem;
-    min-width: 14px;
-    display: inline-block;
     text-align: center;
+    min-height: 300px;
+    width: 100%;
 }
 
-.aviso-senhas {
-    font-size: 0.82rem;
-    margin: 4px 0 0 0;
-    transition: color 0.2s;
+.secao-principal-homepage {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)), url('../imgs/homepage.jpg');
+}
+.secao-principal-acessibilidade {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)), url('../imgs/acessibilidade.png');
+}
+.secao-principal-sobre {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)), url('../imgs/sobre.jpg');
+}
+.secao-principal-projetos {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)), url('../imgs/bolsa.jpg');
 }
 
-.aviso-senhas.ok {
-    color: #27ae60;
+/* Estilos para os títulos de todos os banners */
+.secao-principal-homepage h2,
+.secao-principal-sobre h2,
+.secao-principal-acessibilidade h2,
+.secao-principal-projetos h2 {
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-.aviso-senhas.erro {
-    color: #c0392b;
+/* Estilos para os textos (parágrafos) de todos os banners */
+.secao-principal-homepage p,
+.secao-principal-sobre p,
+.secao-principal-acessibilidade p,
+.secao-principal-projetos p {
+    font-size: 1.1rem;
+    max-width: 900px;
+    line-height: 1.6;
+    opacity: 0.95;
+    margin: 0 auto;
 }
 
-.login-card p {
-    margin-top: 8px;
-    font-size: 1rem;
-    white-space: nowrap;
-    /* não quebrar a linha do cadastre-se */
-}
+/* ==========================================================================
+   5. COMPONENTES: SERVIÇOS, ESTATÍSTICAS, PROJETOS E PLANOS
+   ========================================================================== */
 
+/* --- Serviços --- */
 .secao-servicos {
     padding: 50px 35px;
 }
@@ -406,7 +229,6 @@ body {
 .servicos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    /* se ajusta a largura do computador */
     gap: 20px;
 }
 
@@ -443,80 +265,7 @@ body {
     line-height: 1.5;
 }
 
-.secao-principal-homepage {
-    display: flex;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)),
-        url('../imgs/homepage.jpg');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    margin: 35px;
-    padding: 60px 40px;
-    border-radius: 18px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 300px;
-    width: 100%;
-}
-
-.secao-principal-homepage h2 {
-    font-size: 2.5rem;
-    letter-spacing: 1px;
-    margin-bottom: 16px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-.secao-principal-homepage p {
-    font-size: 1rem;
-    max-width: 700px;
-    line-height: 1.6;
-    opacity: 0.9;
-}
-
-.carrossel {
-    max-width: 700px;
-    min-height: 80px;
-}
-
-.depoimento {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    animation: fadeIn 0.8s ease;
-}
-
-.depoimento.ativo {
-    display: flex;
-}
-
-.depoimento-texto {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    opacity: 0.95;
-    text-align: center;
-}
-
-.depoimento-autor {
-    font-size: 0.9rem;
-    opacity: 0.75;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ESTATÍSTICAS */
+/* --- Estatísticas --- */
 .secao-stats {
     background-color: rgb(0, 37, 92);
     padding: 50px 35px;
@@ -548,7 +297,7 @@ body {
     color: #aac4ff;
 }
 
-/* PLANOS */
+/* --- Planos --- */
 .secao-planos {
     padding: 60px 35px;
 }
@@ -587,7 +336,6 @@ body {
     flex-direction: column; 
     align-items: center;    
 }
-
 
 .plano-card:hover {
     box-shadow: 0 4px 20px rgba(0, 37, 92, 0.12);
@@ -690,21 +438,13 @@ body {
     background-color: #dce8ff;
 }
 
-.campo-nome,
-.campo-email,
-.campo-confirmar-email,
-.campo-senha,
-.campo-confirmar-senha {
-    margin-top: 16px;
-}
-
-.campo-nome label,
-.campo-email label,
-.campo-confirmar-email label,
-.campo-senha label,
-.campo-confirmar-senha label {
-    display: block;
-    margin-bottom: 4px;
+/* --- Projetos --- */
+.projetos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .projeto-card {
@@ -731,60 +471,6 @@ body {
     color: rgb(0, 37, 92);
 }
 
-.secao-principal-acessibilidade {
-    display: flex;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)),
-        url('../imgs/acessibilidade.png');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    margin: 35px;
-    padding: 60px 40px;
-    border-radius: 18px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 300px;
-    width: 100%;
-}
-
-.secao-principal-sobre {
-    display: flex;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)),
-        url('../imgs/sobre.jpg');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    margin: 35px;
-    padding: 60px 40px;
-    border-radius: 18px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 300px;
-    width: 100%;
-}
-
-.secao-principal-projetos {
-    display: flex;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.70), rgba(0, 0, 0, 0.70)),
-        url('../imgs/bolsa.jpg');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    margin: 35px;
-    padding: 60px 40px;
-    border-radius: 18px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    min-height: 300px;
-    width: 100%;
-}
-
 .projeto-descricao {
     font-size: 0.9rem;
     color: #555;
@@ -807,16 +493,231 @@ body {
     margin-bottom: 4px;
 }
 
-.projetos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 24px;
-    max-width: 1000px;
-    margin: 0 auto;
+/* --- Carrossel --- */
+.carrossel {
+    max-width: 700px;
+    min-height: 80px;
 }
 
+.depoimento {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fadeIn 0.8s ease;
+}
 
-/* para mobiles */
+.depoimento.ativo {
+    display: flex;
+}
+
+.depoimento-texto {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.95;
+    text-align: center;
+}
+
+.depoimento-autor {
+    font-size: 0.9rem;
+    opacity: 0.75;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   6. TELAS DE LOGIN E CADASTRO
+   ========================================================================== */
+
+/* Layout Geral das Telas */
+.login-body,
+.cadastro-body {
+    background-color: rgb(76, 143, 243);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Sempre pegar 100% da altura do computador */
+}
+
+.login-container,
+.cadastro-container {
+    background-color: white;
+    padding: 50px;
+    border-radius: 20px;
+    width: 300px;
+}
+
+.login-card,
+.cadastro-card {
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.login-body h1,
+.cadastro-body h1 {
+    margin-bottom: 24px;
+    font-size: 25px;
+}
+
+.login-card a,
+.cadastro-card a {
+    color: #0400ff;
+}
+
+.login-card p,
+.cadastro-card p {
+    margin-top: 8px;
+    font-size: 1rem;
+}
+
+.login-card p {
+    white-space: nowrap; /* não quebrar a linha do cadastre-se */
+}
+
+/* Logos */
+.logo-login-cadastro {
+    width: 290px;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 24px auto;
+}
+
+.logo-sobre {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 24px auto;
+}
+
+/* Campos de Formulário */
+.campo-nome,
+.campo-email,
+.campo-confirmar-email,
+.campo-senha,
+.campo-confirmar-senha {
+    margin-top: 16px;
+}
+
+.campo-nome label,
+.campo-email label,
+.campo-confirmar-email label,
+.campo-senha label,
+.campo-confirmar-senha label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.login-card .campo-email input,
+.login-card .campo-senha input,
+.cadastro-card .campo-nome input,
+.cadastro-card .campo-email input,
+.cadastro-card .campo-confirmar-email input,
+.cadastro-card .campo-senha input,
+.cadastro-card .campo-confirmar-senha input {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 2px 2px;
+}
+
+/* Botões */
+.login-botao {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cadastro-botao {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-botao button,
+.cadastro-botao button {
+    padding: 5px 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.login-botao button:hover,
+.cadastro-botao button:hover {
+    background-color: rgb(76, 143, 243);
+    color: #000;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.botao-pronto {
+    background-color: rgb(0, 37, 92);
+    color: white;
+    border-color: rgb(0, 37, 92);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Mensagens de Validação e Requisitos de Senha */
+.requisitos-senha {
+    list-style: none; /* remove os pontinhos/números padrão de lista */
+    padding: 4px 0 0 0; /* dá um pequeno espaço só no topo, zerando os outros lados */
+    margin: 0; /* remove a margem padrão que o navegador coloca em listas */
+    display: none; /* escondido por padrão, aparece ao clicar no campo */
+}
+
+.campo-senha input:focus ~ .requisitos-senha {
+    display: block; /* mostra quando o input está em foco */
+}
+
+.requisito {
+    font-size: 0.78rem;
+    color: #c0392b;
+    margin: 1px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.2s;
+}
+
+.requisito.ok {
+    color: #27ae60;
+}
+
+.requisito .icone {
+    font-weight: bold;
+    font-size: 0.9rem;
+    min-width: 14px;
+    display: inline-block;
+    text-align: center;
+}
+
+.aviso-senhas {
+    font-size: 0.82rem;
+    margin: 4px 0 0 0;
+    transition: color 0.2s;
+}
+
+.aviso-senhas.ok {
+    color: #27ae60;
+}
+
+.aviso-senhas.erro {
+    color: #c0392b;
+}
+
+/* ==========================================================================
+   7. RESPONSIVIDADE (Telas menores)
+   ========================================================================== */
 @media (max-width: 600px) {
 
     /* HEADER */

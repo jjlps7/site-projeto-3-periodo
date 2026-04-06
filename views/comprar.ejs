@@ -2,7 +2,8 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Finalizar Compra</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra - Base 5 Automações</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body class="cadastro-body">
@@ -11,26 +12,149 @@
             <h1>Finalizar Compra</h1>
             <p>Você está contratando o plano: <strong><%= plano %></strong></p>
             
-            <form action="/comprar" method="POST">
+            <form action="/comprar" method="POST" id="formCompra">
                 <input type="hidden" name="plano" value="<%= plano %>">
                 
+                <!-- Dados Pessoais -->
                 <div class="campo-nome">
                     <label for="nome">Nome Completo</label>
-                    <input type="text" name="nome" id="nome" required>
+                    <input 
+                        type="text" 
+                        name="nome" 
+                        id="nome" 
+                        placeholder="João Silva"
+                        required
+                        minlength="3"
+                    >
                 </div>
                 
                 <div class="campo-email">
                     <label for="email">E-mail corporativo</label>
-                    <input type="email" name="email" id="email" required>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email" 
+                        placeholder="joao.silva@empresa.com"
+                        required
+                    >
                 </div>
                 
-                <div class="cadastro-botao" style="margin-top: 20px;">
+                <!-- Dados do Cartão -->
+                <div class="campo-cartao">
+                    <label for="numeroCartao">Número do cartão</label>
+                    <input 
+                        type="text" 
+                        name="cartao" 
+                        id="numeroCartao" 
+                        placeholder="1234 5678 9012 3456"
+                        maxlength="19"
+                        required
+                    >
+                </div>
+
+                <!-- Validade e CVV lado a lado -->
+                <div class="campos-cartao-inline">
+                    <div class="campo-validade">
+                        <label for="validade">Validade</label>
+                        <input 
+                            type="text" 
+                            name="validade" 
+                            id="validade" 
+                            placeholder="MM/AA"
+                            maxlength="5"
+                            required
+                        >
+                    </div>
+
+                    <div class="campo-cvv">
+                        <label for="cvv">CVV</label>
+                        <input 
+                            type="text" 
+                            name="cvv" 
+                            id="cvv" 
+                            placeholder="123"
+                            maxlength="4"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="campo-nome-cartao">
+                    <label for="nomeCartao">Nome como está no cartão</label>
+                    <input 
+                        type="text" 
+                        name="nomeCartao" 
+                        id="nomeCartao" 
+                        placeholder="JOÃO SILVA"
+                        required
+                        minlength="3"
+                    >
+                </div>
+
+                <div class="cadastro-botao" style="margin-top: 24px;">
+                    <a href="/" style="color: #1a56db; display: flex; align-items: center;">← Voltar</a>
                     <button type="submit" class="botao-pronto">Confirmar Compra</button>
                 </div>
             </form>
-            <br>
-            <a href="/" style="color: blue;">Voltar</a>
         </div>
     </div>
+
+    <script>
+        // Máscara para número do cartão: 1234 5678 9012 3456
+        document.getElementById('numeroCartao').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+            let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formatted;
+        });
+
+        // Máscara para validade: MM/AA
+        document.getElementById('validade').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length >= 2) {
+                e.target.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+            } else {
+                e.target.value = value;
+            }
+        });
+
+        // Máscara para CVV: apenas números
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // Validação básica antes de enviar
+        document.getElementById('formCompra').addEventListener('submit', function(e) {
+            const numeroCartao = document.getElementById('numeroCartao').value.replace(/\s/g, '');
+            const validade = document.getElementById('validade').value;
+            const cvv = document.getElementById('cvv').value;
+
+            // Verifica se cartão tem 16 dígitos
+            if (numeroCartao.length !== 16) {
+                e.preventDefault();
+                alert('O número do cartão deve ter 16 dígitos');
+                return;
+            }
+
+            // Verifica formato da validade
+            if (!/^\d{2}\/\d{2}$/.test(validade)) {
+                e.preventDefault();
+                alert('Validade deve estar no formato MM/AA');
+                return;
+            }
+
+            // Verifica CVV (3 ou 4 dígitos)
+            if (cvv.length < 3 || cvv.length > 4) {
+                e.preventDefault();
+                alert('CVV deve ter 3 ou 4 dígitos');
+                return;
+            }
+        });
+
+        // Converte nome do cartão para maiúsculas automaticamente
+        document.getElementById('nomeCartao').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+    </script>
 </body>
 </html>
