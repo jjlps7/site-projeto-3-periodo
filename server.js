@@ -54,6 +54,47 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
+// =======================================================================
+// MODO DE MANUTENÇÃO (Erro 503) 
+// =======================================================================
+const emManutencao = false; // Quando precisar atualizar  o banco de dados, mude para 'true'
+
+app.use((req, res, next) => {
+    if (emManutencao) {
+        res.status(503).send(`
+            <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+                <h1>Voltamos já! (Erro 503)</h1>
+                <p>O serviço está temporariamente indisponível. Nossa cabra de engenharia está consertando os cabos do servidor.</p>
+                <img src="https://httpgoats.com/503.jpg" alt="Cabra em manutenção - Erro 503" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+            </div>
+        `);
+    } else {
+        next(); // Se não estiver em manutenção, deixa o site funcionar normal
+    }
+});
+
+// Configuração do Limite de Requisições (Erro 429)
+const rateLimit = require('express-rate-limit');
+const limitadorGeral = rateLimit({
+    windowMs: 1 * 60 * 1000, // Janela de tempo: 1 minuto (em milissegundos)
+    max: 5, // Limite: bloqueia no 6º acesso dentro do mesmo minuto
+    handler: (req, res) => {
+        // Envia o HTML com a Cabra
+        res.status(429).send(`
+            <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+                <h1>Ops! Vai com calma aí. (Erro 429)</h1>
+                <p>Você fez muitas tentativas seguidas. A nossa cabra de segurança bloqueou o acesso.<br>Respire um pouco e tente novamente daqui a 1 minuto.</p>
+                <img src="https://httpgoats.com/429.jpg" alt="Cabra de guarda - Erro 429" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+                <br>
+                <a href="/" style="display: inline-block; padding: 12px 24px; background-color: rgb(0, 37, 92); color: white; text-decoration: none; border-radius: 20px;">Voltar para a Home</a>
+            </div>
+        `);
+    }
+});
+// Aplica o limitador EXCLUSIVAMENTE na rota de login (para proteger senhas)
+app.use('/login', limitadorGeral);
+
+
 // ROTAS DE TELAS
 app.get('/', (req, res) => {
     res.render('index');
@@ -113,7 +154,16 @@ app.post('/login', async (req, res) => {
                 return res.redirect('/');
             }
         }
-        res.send("E-mail ou senha incorretos.");
+        // Substituindo o res.send() simples pela tela do Erro 401
+        res.status(401).send(`
+            <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+                <h1>Ops! Acesso Não Autorizado (Erro 401)</h1>
+                <p>E-mail ou senha incorretos. O gato da segurança não te reconheceu!</p>
+                <img src="https://http.cat/401.jpg" alt="Gato - Erro 401" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+                <br>
+                <a href="/login" style="display: inline-block; padding: 12px 24px; background-color: rgb(0, 37, 92); color: white; text-decoration: none; border-radius: 20px;">Tentar Novamente</a>
+            </div>
+        `);
     } catch (err) {
         res.status(500).send(`
             <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
@@ -138,11 +188,30 @@ app.post('/comprar', verificarLogin, async (req, res) => {
     // 1. Extraímos todos os campos do formulário
     const { plano, nome, email, cartao, validade, cvv, nomeCartao } = req.body;
     
+    // =======================================================================
+    // VALIDAÇÃO DE SEGURANÇA (Erro 400 - Bad Request)
+    // =======================================================================
+    const planosValidos = ['Básico', 'Profissional', 'Enterprise']; // Ajuste aqui para os nomes exatos dos seus planos!
+    
+    // Se o plano estiver vazio ou não for um dos três planos oficiais:
+    if (!plano || !planosValidos.includes(plano)) {
+        return res.status(400).send(`
+            <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+                <h1>Ops! Requisição Inválida (Erro 400)</h1>
+                <p>Os dados enviados estão incorretos ou foram adulterados. Não tente enganar o sistema!</p>
+                <img src="https://http.dog/400.jpg" alt="Cachorro julgador - Erro 400" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+                <br>
+                <a href="/" style="display: inline-block; padding: 12px 24px; background-color: rgb(0, 37, 92); color: white; text-decoration: none; border-radius: 20px;">Voltar aos Planos</a>
+            </div>
+        `);
+    }
+    // =======================================================================
+
     // 2. Pega o ID se estiver logado
     const usuarioId = req.session.usuario ? req.session.usuario.id : null; 
 
     try {
-        throw new Error("Simulando uma falha de conexão com o banco!");
+        // throw new Error("Simulando uma falha de conexão com o banco!");
         const query = `
             INSERT INTO pedidos 
             (plano, nome_cliente, email_cliente, usuario_id, cartao, validade, cvv, nome_cartao) 
@@ -163,6 +232,21 @@ app.post('/comprar', verificarLogin, async (req, res) => {
             mensagem: "Não foi possível processar seu pedido no momento. Tente novamente mais tarde." 
         });
     }
+});
+
+// =======================================================================
+// BLOQUEIO DE MÉTODO (Erro 405) - Para quem tentar usar PUT, DELETE ou acessar /comprar de forma errada
+// =======================================================================
+app.all('/comprar', (req, res) => {
+    res.status(405).send(`
+        <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+            <h1>Você não pode fazer isso! (Erro 405)</h1>
+            <p>O método HTTP que você tentou usar não é permitido nesta rota da Base 5 Automações.</p>
+            <img src="https://http.dog/405.jpg" alt="Cachorro bloqueando - Erro 405" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+            <br>
+            <a href="/" style="display: inline-block; padding: 12px 24px; background-color: rgb(0, 37, 92); color: white; text-decoration: none; border-radius: 20px;">Voltar para a Home</a>
+        </div>
+    `);
 });
 
 // ROTA 404 (Página Não Encontrada) - Deve ser sempre a última rota do arquivo!
