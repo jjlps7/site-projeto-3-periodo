@@ -106,21 +106,37 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-// ROTA DE COMPRA (Vinculando ao usuário)
+// ROTA DE COMPRA (Vinculando ao usuário e salvando cartão)
 app.post('/comprar', async (req, res) => {
-    const { plano, nome, email } = req.body;
-    const usuarioId = req.session.usuario ? req.session.usuario.id : null; // Pega o ID se estiver logado
+    // 1. Extraímos todos os campos do formulário
+    const { plano, nome, email, cartao, validade, cvv, nomeCartao } = req.body;
+    
+    // 2. Pega o ID se estiver logado
+    const usuarioId = req.session.usuario ? req.session.usuario.id : null; 
 
     try {
-        const query = 'INSERT INTO pedidos (plano, nome_cliente, email_cliente, usuario_id) VALUES ($1, $2, $3, $4)';
-        await pool.query(query, [plano, nome, email, usuarioId]);
-        res.send('<h1>Pedido vinculado com sucesso!</h1><a href="/">Voltar</a>');
+        // throw new Error("Simulando uma falha de conexão com o banco!");
+        const query = `
+            INSERT INTO pedidos 
+            (plano, nome_cliente, email_cliente, usuario_id, cartao, validade, cvv, nome_cartao) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `;
+        
+        await pool.query(query, [plano, nome, email, usuarioId, cartao, validade, cvv, nomeCartao]);
+        
+        // Renderiza a tela passando a variável sucesso como TRUE
+        res.render('resultado', { sucesso: true });
+
     } catch (err) {
-        console.error(err);
-        res.status(500).send("Erro ao salvar pedido.");
+        console.error(err); // Continua imprimindo o erro no terminal Zsh para você debugar
+        
+        // Renderiza a MESMA tela, mas passa sucesso como FALSE e envia o texto do erro
+        res.status(500).render('resultado', { 
+            sucesso: false, 
+            mensagem: "Não foi possível processar seu pedido no momento. Tente novamente mais tarde." 
+        });
     }
 });
-
 // Iniciar o servidor
 const PORT = 3000;
 app.listen(PORT, () => {

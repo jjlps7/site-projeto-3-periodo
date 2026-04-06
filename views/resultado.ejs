@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Compra - Base 5 Automações</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="cadastro-body">
+    <div class="cadastro-container">
+        <div class="cadastro-card" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+
+            <% if (sucesso) { %>
+                <h1 style="color: #27ae60; margin-bottom: 16px;">Sucesso! 🎉</h1>
+                <p style="margin-bottom: 30px; line-height: 1.5; color: #555;">
+                    Seu pedido foi processado e vinculado com sucesso. Nossa equipe entrará em contato em breve!
+                </p>
+            <% } else { %>
+                <h1 style="color: #c0392b; margin-bottom: 16px;">Ops! Algo deu errado 😢</h1>
+                <p style="margin-bottom: 30px; line-height: 1.5; color: #555;">
+                    <%= mensagem %>
+                </p>
+            <% } %>
+
+            <a href="/" class="botao-pronto" style="padding: 12px 24px; border-radius: 20px; text-decoration: none; display: inline-block; color: white;">
+                Voltar para a Home
+            </a>
+        </div>
+    </div>
+</body>
+</html>
