@@ -4,42 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado da Compra - Base 5 Automações</title>
-    <link rel="stylesheet" href="/css/style.css">
+    
+    <% if (sucesso) { %>
+        <link rel="stylesheet" href="/css/style.css">
+    <% } %>
 </head>
-<body class="cadastro-body">
-    <a href="#conteudo-principal" class="skip-link">Pular para o resultado</a>
 
-    <div class="cadastro-container">
-        <main id="conteudo-principal" class="cadastro-card" tabindex="-1" aria-live="polite" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-
-            <% if (sucesso) { %>
+<% if (sucesso) { %>
+    <body class="cadastro-body">
+        <a href="#conteudo-principal" class="skip-link">Pular para o resultado</a>
+        <div class="cadastro-container">
+            <main id="conteudo-principal" class="cadastro-card" tabindex="-1" aria-live="polite" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
                 <h1 style="color: #27ae60; margin-bottom: 16px;">Sucesso! 🎉</h1>
                 <p style="margin-bottom: 30px; line-height: 1.5; color: #555;">
                     Seu pedido foi processado e vinculado com sucesso. Nossa equipe entrará em contato em breve!
                 </p>
-            <% } else { %>
-                <h1 style="color: #c0392b; margin-bottom: 16px;">Ops! Algo deu errado 😢</h1>
-                <p style="margin-bottom: 30px; line-height: 1.5; color: #555;">
-                    <%= mensagem %>
-                </p>
-                <img src="https://http.dog/500.jpg" alt="Erro Interno do Servidor" style="border-radius: 20px; max-width: 400px; width: 100%; margin-bottom: 20px;">
-            <% } %>
-
-            <a href="/" class="botao-pronto" style="padding: 12px 24px; border-radius: 20px; text-decoration: none; display: inline-block; color: white;" aria-label="Voltar para a página inicial">
-                Voltar para a Home
-            </a>
-        </main>
-    </div>
-
-    <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-            <div class="vw-plugin-top-wrapper"></div>
+                <a href="/" class="botao-pronto" style="padding: 12px 24px; border-radius: 20px; text-decoration: none; display: inline-block; color: white;" aria-label="Voltar para a página inicial">
+                    Voltar para a Home
+                </a>
+            </main>
         </div>
-    </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>
-</body>
+
+        <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
+        <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script><script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
+    </body>
+
+<% } else { %>
+    <body style="background-color: white;">
+        <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+            <h1>Ops! Erro 500.</h1>
+            <p><%= mensagem %></p>
+            <img src="https://http.dog/500.jpg" alt="Cachorro - Erro Interno do Servidor" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+            <br>
+            <a href="/" style="display: inline-block; padding: 12px 24px; background-color: rgb(0, 37, 92); color: white; text-decoration: none; border-radius: 20px;">Voltar para a Home</a>
+        </div>
+
+        <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
+        <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script><script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
+    </body>
+<% } %>
+
 </html>

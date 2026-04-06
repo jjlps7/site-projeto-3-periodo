@@ -142,7 +142,7 @@ app.post('/comprar', verificarLogin, async (req, res) => {
     const usuarioId = req.session.usuario ? req.session.usuario.id : null; 
 
     try {
-        // throw new Error("Simulando uma falha de conexão com o banco!");
+        throw new Error("Simulando uma falha de conexão com o banco!");
         const query = `
             INSERT INTO pedidos 
             (plano, nome_cliente, email_cliente, usuario_id, cartao, validade, cvv, nome_cartao) 
