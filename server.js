@@ -14,6 +14,8 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASS,
     port: process.env.DB_PORT,
+    connectionTimeoutMillis: 5000, // Espera no máximo 5 segundos para conectar
+    query_timeout: 5000 // Espera no máximo 5 segundos para uma query rodar
 });
 
 
@@ -29,6 +31,23 @@ app.use((req, res, next) => {
     res.locals.usuario = req.session.usuario || null;
     next();
 });
+
+// Função de segurança para bloquear páginas restritas
+const verificarLogin = (req, res, next) => {
+    if (req.session.usuario) {
+        next(); 
+    } else {
+        res.status(403).send(`
+            <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+                <h1>Ops! Acesso Negado.</h1>
+                <p>Você precisa fazer login para acessar a área de pagamento.</p>
+                <img src="https://http.dog/403.jpg" alt="Cachorro de guarda - Erro 403" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+                <br>
+                <a href="/login" style="display: inline-block; padding: 12px 24px; background-color: rgb(0, 37, 92); color: white; text-decoration: none; border-radius: 20px;">Ir para o Login</a>
+            </div>
+        `);
+    }
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -60,7 +79,7 @@ app.get('/cadastro', (req, res) => {
     res.render('cadastro');
 });
 
-app.get('/comprar', (req, res) => {
+app.get('/comprar', verificarLogin, (req, res) => {
     const planoEscolhido = req.query.plano || 'Nenhum plano selecionado'; 
     res.render('comprar', { plano: planoEscolhido });
 });
@@ -96,7 +115,15 @@ app.post('/login', async (req, res) => {
         }
         res.send("E-mail ou senha incorretos.");
     } catch (err) {
-        res.status(500).send("Erro no servidor.");
+        res.status(500).send(`
+            <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+                <h1>Ops! Erro 500.</h1>
+                <p>Nosso servidor tropeçou nos cabos ou o banco de dados está tirando uma soneca.</p>
+                <img src="https://http.dog/500.jpg" alt="Cachorro - Erro 500" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+                <br>
+                <a href="/" style="display: inline-block; padding: 12px 24px; background-color: rgb(0, 37, 92); color: white; text-decoration: none; border-radius: 20px;">Voltar para a Home</a>
+            </div>
+        `);
     }
 });
 
@@ -107,7 +134,7 @@ app.get('/logout', (req, res) => {
 });
 
 // ROTA DE COMPRA (Vinculando ao usuário e salvando cartão)
-app.post('/comprar', async (req, res) => {
+app.post('/comprar', verificarLogin, async (req, res) => {
     // 1. Extraímos todos os campos do formulário
     const { plano, nome, email, cartao, validade, cvv, nomeCartao } = req.body;
     
@@ -137,6 +164,20 @@ app.post('/comprar', async (req, res) => {
         });
     }
 });
+
+// ROTA 404 (Página Não Encontrada) - Deve ser sempre a última rota do arquivo!
+app.use((req, res) => {
+    res.status(404).send(`
+        <div style="text-align: center; margin-top: 100px; font-family: Arial, sans-serif; color: rgb(0, 37, 92);">
+            <h1>Ops! Página não encontrada.</h1>
+            <p>O link que você tentou acessar não existe na Base 5 Automações.</p>
+            <img src="https://http.dog/404.jpg" alt="Cachorro cavando buraco - Erro 404" style="border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; max-width: 750px; height: auto; margin: 20px auto; display: block;">
+            <br>
+            <a href="/" style="display: inline-block; padding: 12px 24px; background-color: rgb(0, 37, 92); color: white; text-decoration: none; border-radius: 20px;">Voltar para a Home</a>
+        </div>
+    `);
+});
+
 // Iniciar o servidor
 const PORT = 3000;
 app.listen(PORT, () => {
