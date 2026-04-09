@@ -821,4 +821,28 @@ button {
     .projetos-grid {
         grid-template-columns: 1fr;
     }
+
+    /*SOBRE*/
+    .secao-principal-sobre {
+    margin: 10px;
+    padding: 30px 16px;
+    width: auto;
+    }
+
+    .secao-principal-sobre h2 {
+    font-size: 1.3rem;
+    }
+
+    .secao-principal-sobre p {
+    font-size: 1rem;
+    }
+
+    .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    }
+
+    .stat-item {
+    padding: 10px;
+    }
 }
