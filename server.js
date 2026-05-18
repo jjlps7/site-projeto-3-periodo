@@ -107,12 +107,12 @@ app.get('/comprar', verificarLogin, (req, res) => {
 
 // ROTA DE CADASTRO
 app.post('/cadastro', async (req, res) => {
-    const { nome, email, senha } = req.body;
+    const { nome, cpf, email, senha } = req.body;
     try {
         const senhaHash = await bcrypt.hash(senha, 10); // Embaralha a senha
         const query =
-            'INSERT INTO usuarios (nome, email, senha) VALUES ($1, $2, $3) RETURNING id, nome';
-        const result = await pool.query(query, [nome, email, senhaHash]);
+            'INSERT INTO usuarios (nome, cpf, email, senha) VALUES ($1, $2, $3, $4) RETURNING id, nome';
+        const result = await pool.query(query, [nome, cpf, email, senhaHash]);
 
         // Loga o usuário automaticamente após cadastrar
         req.session.usuario = result.rows[0];

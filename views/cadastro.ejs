@@ -49,6 +49,19 @@
                         />
                     </div>
 
+                    <div class="campo-cpf">
+                        <label for="cpf">CPF</label>
+                        <input
+                            type="text"
+                            name="cpf"
+                            id="cpf"
+                            placeholder="Informe seu CPF"
+                            tabindex="2"
+                            maxlength="14"
+                            required
+                        />
+                    </div>
+
                     <div class="campo-email">
                         <label for="email">E-Mail</label>
                         <input
@@ -56,7 +69,7 @@
                             name="email"
                             id="email"
                             placeholder="Digite seu e-mail"
-                            tabindex="2"
+                            tabindex="3"
                             required
                         />
                         <p class="aviso-senhas" id="aviso-email" aria-live="polite"></p>
@@ -70,7 +83,7 @@
                             name="confirmar_email"
                             id="confirmar_email"
                             placeholder="Confirme seu e-mail"
-                            tabindex="3"
+                            tabindex="4"
                             required
                         />
                         <p class="aviso-senhas" id="aviso-confirmar-email" aria-live="polite"></p>
@@ -83,7 +96,7 @@
                             name="senha"
                             id="senha"
                             placeholder="Digite sua senha"
-                            tabindex="4"
+                            tabindex="5"
                             required
                         />
                         <ul class="requisitos-senha" id="requisitos-senha">
@@ -109,7 +122,7 @@
                             name="confirmar_senha"
                             id="confirmar_senha"
                             placeholder="Confirme sua senha"
-                            tabindex="5"
+                            tabindex="6"
                             required
                         />
                         <p class="aviso-senhas" id="aviso-senhas" aria-live="polite"></p>
@@ -118,17 +131,32 @@
 
                     <div class="cadastro-botao">
                         <button type="reset" tabindex="7">Apagar</button>
-                        <button type="submit" tabindex="6">Criar</button>
+                        <button type="submit" tabindex="8">Criar</button>
                     </div>
                 </form>
                 <p>
                     Já tem conta?
-                    <a href="/login" tabindex="8">Login</a>
+                    <a href="/login" tabindex="9">Login</a>
                 </p>
             </div>
         </div>
 
         <script>
+            // máscara CPF
+            const inputCpf = document.getElementById('cpf');
+            // pega o input através do ID
+            inputCpf.addEventListener('input', function(e){ //detecta mudanças no campo conforme é feito
+                let valor = e.target.value; //pega o texto digitado 
+
+                valor = valor.replace(/\D/g, ""); //qualquer caractere que não seja número é ignorado
+                valor = valor.replace(/(\d{3})(\d)/, "$1.$2"); //pega os 3 primeiros números e o próximo e add um ponto entre eles
+                valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+                valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); //pega o bloco dos últimos 3 e os últimos 2 e adiciona um - entre
+
+                e.target.value = valor; //devolve o valor formatado
+            });
+
+
             // pega os inputs do formulário
             const campos = document.querySelectorAll('input');
             // percorre cada um
@@ -269,7 +297,8 @@
 
             function atualizarBotaoCadastro() {
                 const tudo_preenchido =
-                    campoNome.value.trim() !== '' &&
+                    campoNome.value.trim() !== '' && //remove espaços em brancos
+                    inputCpf.value.trim() !== '' &&
                     inputEmail.value.trim() !== '' &&
                     inputConfirmarEmail.value.trim() !== '' &&
                     inputSenha.value.trim() !== '' &&
@@ -282,7 +311,8 @@
                 }
             }
 
-            campoNome.addEventListener('input', atualizarBotaoCadastro);
+            campoNome.addEventListener('input', atualizarBotaoCadastro); //verifica toda vez que o campo é atualizado
+            inputCpf.addEventListener('input', atualizarBotaoCadastro)
             inputEmail.addEventListener('input', atualizarBotaoCadastro);
             inputConfirmarEmail.addEventListener('input', atualizarBotaoCadastro);
             inputSenha.addEventListener('input', atualizarBotaoCadastro);
