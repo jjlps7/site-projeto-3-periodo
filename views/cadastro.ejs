@@ -15,23 +15,15 @@
                 class="logo-login-cadastro"
             />
             <div class="cadastro-card">
-                <% if (aviso === 'duplicado') { %>
-                <div
-                    style="
-                        width: 100%;
-                        box-sizing: border-box;
-                        background-color: #f8d7da;
-                        color: #721c24;
-                        padding: 12px;
-                        border-radius: 8px;
-                        border: 1px solid #f5c6cb;
-                        margin-bottom: 20px;
-                        text-align: center;
-                        font-size: 0.9rem;
-                    "
-                >
-                    <strong>Erro de Cadastro:</strong>
-                    Este e-mail já está registado no sistema.
+                <% if (aviso === 'email_duplicado') { %>
+                <div style="width: 100%; box-sizing: border-box; background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 8px; border: 1px solid #f5c6cb; margin-bottom: 20px; text-align: center; font-size: 0.9rem;">
+                    <strong>Erro de Cadastro:</strong> Este e-mail já está registrado no sistema.
+                </div>
+                <% } %>
+
+                <% if (aviso === 'cpf_duplicado') { %>
+                <div style="width: 100%; box-sizing: border-box; background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 8px; border: 1px solid #f5c6cb; margin-bottom: 20px; text-align: center; font-size: 0.9rem;">
+                    <strong>Erro de Cadastro:</strong> Este CPF já está vinculado a uma conta.
                 </div>
                 <% } %>
                 <form id="form-cadastro" action="/cadastro" method="post">

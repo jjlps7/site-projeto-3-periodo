@@ -631,7 +631,11 @@ button {
 .cadastro-card .campo-email input,
 .cadastro-card .campo-confirmar-email input,
 .cadastro-card .campo-senha input,
-.cadastro-card .campo-confirmar-senha input {
+.cadastro-card .campo-confirmar-senha input,
+.cadastro-card .campo-cartao input,
+.cadastro-card .campo-validade input,
+.cadastro-card .campo-cvv input,
+.cadastro-card .campo-nome-cartao input {
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
@@ -654,6 +658,31 @@ button {
     text-decoration: underline;
 }
 
+.campo-cartao,
+.campo-validade,
+.campo-cvv,
+.campo-nome-cartao {
+    margin-top: 16px;
+}
+
+.campo-cartao label,
+.campo-validade label,
+.campo-cvv label,
+.campo-nome-cartao label {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.campos-cartao-inline {
+    display: flex;
+    gap: 15px;
+}
+
+.campos-cartao-inline .campo-validade,
+.campos-cartao-inline .campo-cvv {
+    flex: 1;
+    margin-top: 16px;
+}
 /* Botões */
 .login-botao {
     display: flex;
@@ -882,7 +911,7 @@ button {
     display: inline-block;
     padding: 12px 24px;
     background-color: rgb(0, 37, 92);
-    color: white;
+    color: white !important;
     text-decoration: none;
     border-radius: 20px;
     font-weight: bold;

@@ -1,4 +1,6 @@
 require('dotenv').config(); // Importa e configura o dotenv
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 const express = require('express');
 const { Pool } = require('pg');
 const session = require('express-session');
@@ -16,6 +18,14 @@ const pool = new Pool({
     port: process.env.DB_PORT,
     connectionTimeoutMillis: 5000, // Espera no máximo 5 segundos para conectar
     query_timeout: 5000, // Espera no máximo 5 segundos para uma query rodar
+});
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
 });
 
 app.use(
@@ -59,6 +69,7 @@ app.use((req, res, next) => {
         next(); // Se não estiver em manutenção, deixa o site funcionar normal
     }
 });
+// =======================================================================
 
 // Configuração do Limite de Requisições (Erro 429)
 const rateLimit = require('express-rate-limit');
@@ -105,6 +116,64 @@ app.get('/comprar', verificarLogin, (req, res) => {
     res.render('comprar', { plano: planoEscolhido });
 });
 
+app.get('/recuperar-senha', (req, res) => {
+    res.render('recuperacao', { 
+        etapa: 'solicitar', 
+        aviso: req.query.aviso || null 
+    });
+});
+
+// ============================================
+// RECUPERAÇÃO DE SENHA
+//============================================
+
+// ROTA GET: Abre a tela de digitar a nova senha (vinda do clique no e-mail)
+app.get('/resetar-senha', async (req, res) => {
+    const { token } = req.query;
+
+    try {
+        // Busca se existe o token e se ele ainda não expirou (NOW() verifica a hora atual do banco)
+        const sql =
+            'SELECT id FROM usuarios WHERE token_recuperacao = $1 AND expiracao_token > NOW()';
+        const result = await pool.query(sql, [token]);
+
+        if (result.rows.length === 0) {
+            return res.status(400).send('Este link de recuperação é inválido ou já expirou.');
+        }
+
+        // Se o token for válido, renderiza a tela passando o token para o formulário
+        res.render('recuperacao', { etapa: 'resetar', token: token });
+    } catch (err) {
+        console.error(err);
+        res.status(500).render('erro500');
+    }
+});
+
+// ROTA POST: Recebe a nova senha e salva por cima da antiga
+app.post('/resetar-senha', async (req, res) => {
+    const { token, senha } = req.body;
+
+    try {
+        // Criptografa a nova senha antes de salvar
+        const senhaHash = await bcrypt.hash(senha, 10);
+
+        // Atualiza a senha e APAGA o token do banco para ele não ser reutilizado
+        const sql = `
+            UPDATE usuarios 
+            SET senha = $1, token_recuperacao = NULL, expiracao_token = NULL 
+            WHERE token_recuperacao = $2
+        `;
+
+        await pool.query(sql, [senhaHash, token]);
+
+        // Redireciona para o login avisando que mudou com sucesso
+        res.redirect('/login?aviso=senha_alterada');
+    } catch (err) {
+        console.error(err);
+        res.status(500).render('erro500');
+    }
+});
+
 // ROTA DE CADASTRO
 app.post('/cadastro', async (req, res) => {
     const { nome, cpf, email, senha } = req.body;
@@ -118,12 +187,20 @@ app.post('/cadastro', async (req, res) => {
         req.session.usuario = result.rows[0];
         res.redirect('/');
     } catch (err) {
-        // Verifica se o erro no PostgreSQL é o de e-mail duplicado (código 23505)
+        // Verifica se o erro no PostgreSQL é de dado duplicado (código 23505)
         if (err.code === '23505') {
-            return res.redirect('/cadastro?aviso=duplicado');
+            // Verifica se a restrição violada tem a palavra 'email' no nome
+            if (err.constraint.includes('email')) {
+                return res.redirect('/cadastro?aviso=email_duplicado');
+            }
+
+            // Verifica se a restrição violada tem a palavra 'cpf' no nome
+            if (err.constraint.includes('cpf')) {
+                return res.redirect('/cadastro?aviso=cpf_duplicado');
+            }
         }
 
-        // Se não for e-mail duplicado, então é um erro crítico (banco caiu, etc)
+        // Se não for dado duplicado, então é um erro crítico genérico
         console.error('Erro crítico no cadastro:', err);
         res.status(500).render('erro500');
     }
@@ -158,6 +235,57 @@ app.post('/login', async (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
+});
+
+// ROTA RECUPERAR SENHA
+app.post('/recuperar-senha', async (req, res) => {
+    const { email } = req.body; // extrai o email informado
+
+    try {
+        // 1. Verifica se o e-mail existe no banco
+        const result = await pool.query('SELECT id, nome FROM usuarios WHERE email = $1', [email]); //pega id e nome do email informado
+
+        if (result.rows.length === 0) {
+            // Se o e-mail não existir no banco, devolve para a tela com o aviso
+            return res.redirect('/recuperar-senha?aviso=nao_encontrado');
+        }
+        const usuario = result.rows[0]; //pega o primeiro item e armazena como usuário
+
+        // 2. Gera o Token e a data de expiração (15 min)
+        const token = crypto.randomBytes(20).toString('hex'); //gera 20 bytes aleatório e então o transforma em hex
+        const expiracao = new Date(Date.now() + 900000); // Exatamente 15 minutos quando gerado
+
+        // 3. Salva no banco de dados
+        await pool.query(
+            'UPDATE usuarios SET token_recuperacao = $1, expiracao_token = $2 WHERE id = $3',
+            [token, expiracao, usuario.id]
+        );
+
+        // 4. Monta o e-mail
+        const linkReset = `http://localhost:3000/resetar-senha?token=${token}`; //injeta o código direto na url
+
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Base 5 - Recuperação de Senha',
+            html: `
+                <h3>Olá, ${usuario.nome}</h3>
+                <p>Você solicitou a recuperação de senha da sua conta na Base 5.</p>
+                <p>Clique no link abaixo para criar uma nova senha. <b>Este link expira em 15 minutos.</b></p>
+                <a href="${linkReset}">Redefinir minha senha</a>
+                <p>Se você não solicitou isso, ignore este e-mail.</p>
+            `,
+        };
+
+        // 5. Dispara o e-mail
+        await transporter.sendMail(mailOptions);
+
+        // 6. Avisa o usuário que deu certo
+        res.render('recuperacao', { etapa: 'aviso' });
+    } catch (err) {
+        console.error('Erro na recuperação:', err);
+        res.status(500).render('erro500');
+    }
 });
 
 // ROTA DE COMPRA (Vinculando ao usuário e salvando cartão)

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Recuperação de Senha - Base 5</title>
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body class="cadastro-body">
+        <div class="cadastro-container">
+            <div class="cadastro-card">
+                <% if (etapa === 'solicitar') { %> <% if (typeof aviso !== 'undefined' && aviso ===
+                'nao_encontrado') { %>
+                <div
+                    style="
+                        width: 100%;
+                        box-sizing: border-box;
+                        background-color: #f8d7da;
+                        color: #721c24;
+                        padding: 12px;
+                        border-radius: 8px;
+                        border: 1px solid #f5c6cb;
+                        margin-bottom: 20px;
+                        text-align: center;
+                        font-size: 0.9rem;
+                    "
+                >
+                    <strong>Erro:</strong>
+                    Este e-mail não está cadastrado no sistema.
+                </div>
+                <% } %>
+                <form action="/recuperar-senha" method="post">
+                    <h1>Recuperar Senha</h1>
+                    <p style="margin-bottom: 15px; font-size: 0.9rem; color: #555">
+                        Digite o e-mail da sua conta para receber o link.
+                    </p>
+                    <div class="campo-email">
+                        <label for="email">E-Mail</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            placeholder="Digite seu e-mail"
+                            required
+                        />
+                    </div>
+                    <div class="cadastro-botao" style="justify-content: center; margin-top: 20px">
+                        <button type="submit" class="botao-pronto">Enviar Link</button>
+                    </div>
+                </form>
+
+                <% } else if (etapa === 'aviso') { %>
+                <div style="text-align: center">
+                    <span style="font-size: 3rem">📧</span>
+                    <h1 style="margin-top: 15px; margin-bottom: 10px">Verifique seu e-mail</h1>
+                    <p style="color: #555; line-height: 1.5; margin-bottom: 20px">
+                        Enviamos um link de recuperação para o endereço informado. O link é válido
+                        por 15 minutos.
+                    </p>
+                    <a
+                        href="/login"
+                        class="btn-principal"
+                        style="display: inline-block; font-size: 0.9rem; padding: 10px 20px"
+                    >
+                        Voltar para o Login
+                    </a>
+                </div>
+
+                <% } else if (etapa === 'resetar') { %>
+                <form action="/resetar-senha" method="post" id="formReset">
+                    <input type="hidden" name="token" value="<%= token %>" />
+                    <h1>Nova Senha</h1>
+                    <p style="margin-bottom: 15px; font-size: 0.9rem; color: #555">
+                        Digite e confirme sua nova senha de acesso.
+                    </p>
+                    <div class="campo-senha">
+                        <label for="senha">Nova Senha</label>
+                        <input
+                            type="password"
+                            name="senha"
+                            id="senha"
+                            placeholder="Mínimo 8 caracteres"
+                            required
+                        />
+
+                        <ul class="requisitos-senha" id="requisitos-senha">
+                            <li id="req-tamanho" class="requisito">
+                                <span class="icone">✗</span>
+                                8 caracteres
+                            </li>
+                            <li id="req-maiuscula" class="requisito">
+                                <span class="icone">✗</span>
+                                1 letra maiúscula
+                            </li>
+                            <li id="req-numero" class="requisito">
+                                <span class="icone">✗</span>
+                                1 número
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="campo-confirmar-senha">
+                        <label for="confirmar_senha">Confirme a Nova Senha</label>
+                        <input
+                            type="password"
+                            name="confirmar_senha"
+                            id="confirmar_senha"
+                            placeholder="Repita a senha"
+                            required
+                        />
+                        <p class="aviso-senhas" id="aviso-senhas" aria-live="polite"></p>
+                    </div>
+                    <div class="cadastro-botao" style="justify-content: center; margin-top: 20px">
+                        <button type="submit" class="botao-pronto">Alterar Senha</button>
+                    </div>
+                </form>
+
+                <script>
+                    const inputSenha = document.getElementById('senha');
+                    const inputConfirmar = document.getElementById('confirmar_senha');
+                    const avisoSenhas = document.getElementById('aviso-senhas');
+                    const reqTamanho = document.getElementById('req-tamanho');
+                    const reqMaiuscula = document.getElementById('req-maiuscula');
+                    const reqNumero = document.getElementById('req-numero');
+                    const formReset = document.getElementById('formReset');
+
+                    function verificarRequisito(elemento, ok) {
+                        const icone = elemento.querySelector('.icone');
+                        if (ok) {
+                            elemento.classList.add('ok');
+                            icone.textContent = '✓';
+                        } else {
+                            elemento.classList.remove('ok');
+                            icone.textContent = '✗';
+                        }
+                    }
+
+                    function validarSenhaForca() {
+                        const val = inputSenha.value;
+                        const tamanhoOk = val.length >= 8;
+                        const maiusculaOk = /[A-Z]/.test(val);
+                        const numeroOk = /[0-9]/.test(val);
+
+                        verificarRequisito(reqTamanho, tamanhoOk);
+                        verificarRequisito(reqMaiuscula, maiusculaOk);
+                        verificarRequisito(reqNumero, numeroOk);
+
+                        return tamanhoOk && maiusculaOk && numeroOk;
+                    }
+
+                    inputSenha.addEventListener('input', function () {
+                        validarSenhaForca();
+                        if (inputConfirmar.value.length > 0) checarConfirmacao();
+                    });
+
+                    function checarConfirmacao() {
+                        if (inputConfirmar.value === '') {
+                            avisoSenhas.textContent = '';
+                            avisoSenhas.className = 'aviso-senhas';
+                            return false;
+                        }
+                        if (inputSenha.value === inputConfirmar.value) {
+                            avisoSenhas.textContent = '✓ As senhas coincidem';
+                            avisoSenhas.className = 'aviso-senhas ok';
+                            return true;
+                        } else {
+                            avisoSenhas.textContent = '✗ As senhas não coincidem';
+                            avisoSenhas.className = 'aviso-senhas erro';
+                            return false;
+                        }
+                    }
+
+                    inputConfirmar.addEventListener('input', checarConfirmacao);
+
+                    formReset.addEventListener('submit', function (e) {
+                        if (!validarSenhaForca() || !checarConfirmacao()) {
+                            e.preventDefault();
+                            alert('Por favor, preencha todos os requisitos de segurança da senha.');
+                        }
+                    });
+                </script>
+                <% } %>
+            </div>
+        </div>
+    </body>
+</html>
