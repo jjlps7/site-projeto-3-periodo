@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 80px 20px 20px 20px;
+            box-sizing: border-box;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .perfil-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 350px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333333;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 8px;
+        }
+
+        .perfil-info {
+            margin-bottom: 15px;
+        }
+
+        .rotulo {
+            font-weight: bold;
+            color: #666666;
+            display: block;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        .valor {
+            color: #111111;
+            font-size: 1.1em;
+            margin-top: 4px;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 600px) {
+            .perfil-container {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+    <body>
+        <header class="header"><%- include('partials/navbar') %></header>
+            <main id="conteudo-perfil" class="main" tabindex="-1">
+                <div class="perfil-container">
+                    <h2>Seu Perfil</h2>
+                    
+                    <div class="perfil-info">
+                        <h4 class="rotulo">Nome de Usuário</h4>
+                        <div class="valor"><%= dados.nome %></div>
+                    </div>
+                    
+                    <div class="perfil-info">
+                        <h4 class="rotulo">E-mail</h4>
+                        <div class="valor"><%= dados.email %></div>
+                    </div>
+                    
+                    <div class="perfil-info">
+                        <h4 class="rotulo">CPF</h4>
+                        <div class="valor"><%= dados.cpf ? dados.cpf : 'Não informado' %></div>
+                    </div>
+                    
+                    <div class="perfil-info">
+                        <h4 class="rotulo">Compras feitas</h4>
+                        <div class="valor">
+                            <% if (pedidos.length > 0) { %>
+                                <ul style="margin: 0; padding-left: 20px; font-size: 0.9em;">
+                                    <% pedidos.forEach(pedido => { %>
+                                        <li>
+                                            <strong>Plano:</strong> <%= pedido.plano %> <br>
+                                            <small style="color: #666;"><%= new Date(pedido.data_pedido).toLocaleDateString('pt-BR') %></small>
+                                        </li>
+                                    <% }) %>
+                                </ul>
+                            <% } else { %>
+                                <span style="color: #888; font-size: 0.9em;">Nenhuma compra localizada.</span>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        <div vw class="enabled">
+            <div vw-access-button class="active"></div>
+            <div vw-plugin-wrapper>
+                <div class="vw-plugin-top-wrapper"></div>
+            </div>
+        </div>
+        <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+        <script>
+            new window.VLibras.Widget('https://vlibras.gov.br/app');
+        </script>
+    </body>
+</html>

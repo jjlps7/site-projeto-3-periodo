@@ -106,6 +106,43 @@ app.get('/login', (req, res) => {
     res.render('login', { aviso: avisoUrl });
 });
 
+app.get('/perfil', verificarLogin, async (req, res) => {
+    try {
+        // 1. Pega o ID do usuário que está salvo na sessão
+        const usuarioId = req.session.usuario.id;
+
+        // 2. Busca os dados completos do usuário no banco de dados
+        const usuarioQuery = await pool.query(
+            'SELECT nome, email, cpf FROM usuarios WHERE id = $1', 
+            [usuarioId]
+        );
+
+        // 3. Busca as compras/pedidos feitos por esse usuário
+        const pedidosQuery = await pool.query(
+            'SELECT plano, data_pedido FROM pedidos WHERE usuario_id = $1 ORDER BY data_pedido DESC', 
+            [usuarioId]
+        );
+
+        // Se por algum motivo o usuário não for encontrado no banco
+        if (usuarioQuery.rows.length === 0) {
+            return res.redirect('/logout');
+        }
+
+        const dadosUsuario = usuarioQuery.rows[0];
+        const listaPedidos = pedidosQuery.rows;
+
+        // 4. Renderiza a página enviando os dados do usuário e dos pedidos
+        res.render('perfil', { 
+            dados: dadosUsuario,
+            pedidos: listaPedidos
+        });
+
+    } catch (err) {
+        console.error('Erro ao carregar perfil:', err);
+        res.status(500).render('erro500');
+    }
+});
+
 app.get('/cadastro', (req, res) => {
     const avisoUrl = req.query.aviso;
     res.render('cadastro', { aviso: avisoUrl });

@@ -19,7 +19,7 @@
     "homepage": "https://github.com/Lao-00/site-projeto-3-periodo#readme",
     "dependencies": {
         "bcrypt": "^6.0.0",
-        "dotenv": "^17.4.0",
+        "dotenv": "^17.4.2",
         "ejs": "^5.0.1",
         "express": "^5.2.1",
         "express-rate-limit": "^8.3.2",
